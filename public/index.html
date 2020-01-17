@@ -8,10 +8,72 @@
     <title>vuetest</title>
   </head>
   <body>
-    <noscript>
-      <strong>We're sorry but vuetest doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
+  <div id="test">
+    <!--vue中的声明式开发 vmodel-->
+    <input type="text" v-model="name">
+    <p>Help {{ name }}</p>
+    <p v-text="name"></p>
+  </div>
+  <p>{{name}}</p>
+  <div id="test1">
+    <p>{{msg}}</p>
+    <p>{{msg.toUpperCase()}}</p>
+    <p v-text="msg"></p>
+    <p v-html="msg"></p>
+    <h2>强制数据绑定</h2>
+    <img v-bind:src="imageURL">
+
+    <h2>绑定事件监听</h2>
+    <button v-on:click="callback">test1</button>
+    <button @click="callback">test1</button>
+    <button @click="callback2(msg)">test1</button>
+
+  </div>
+  <div id="demo">
+    <input type="text" placeholder="First Name" v-model="firstName"><br>
+    <input type="text" placeholder="Last Name" v-model="lastName"><br>
+    <input type="text" placeholder="Full Name1" v-model="firstName+lastName"><br>
+    <input type="text" placeholder="Full Name2"><br>
+    <input type="text" placeholder="Full Name3"><br>
+  </div>
+  <!--引入vue-->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script type="text/javascript">
+    const vm = new Vue({
+      el: '#test',
+      data: {
+        name:"ryan"
+      }
+    })
+    //vm.name = "ryanqi"
+  </script>
+
+  <script type="text/javascript">
+    const vm1 = new Vue({
+      el: '#test1',
+      data: {
+        msg:'<a href="http://www.atguigu.com">I will Back!</a>',
+        imageURL:"https://cn.vuejs.org/images/logo.png"
+      },
+      methods:{
+        callback() {
+          alert('我点到了')
+        },
+        callback2(content){
+          alert(content)
+        }
+      }
+    })
+  </script>
+  <script type="text/javascript">
+    new Vue({
+      el:"#demo",
+      data:{
+        firstName:'A',
+        lastName: 'B',
+        fullName1: 'A B'
+      }
+    })
+  </script>
   </body>
 </html>
