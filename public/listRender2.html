@@ -13,9 +13,9 @@
             {{index}}---{{p.name}}---{{p.age}}
         </li>
 
-        <button>年龄升序</button>
-        <button>年龄降序</button>
-        <button>原本顺序</button>
+        <button @click="setOrderType(1)">年龄升序</button>
+        <button @click="setOrderType(2)">年龄降序</button>
+        <button @click="setOrderType(0)">原本顺序</button>
 
     </ul>
 </div>
@@ -26,6 +26,7 @@
         el: '#demo',
         data:{
             searchName:'',
+            orderType:0,//0代表不排序，1代表升序，2代表降序
             persons: [ //vue本身只是监视了persons的改变,没有监视数组内部数据的改变
                 //vue重写了数组中的一系列改变数组内部数据的方法（先调用原生，更新界面）---》数组内部改变，界面自动变化
                 {name:'Tom',age: 18},
@@ -35,18 +36,36 @@
             ]
         },
         //计算属性的难点在于很难想到要用
+        //通过计算过滤才能产生filterPerson
         computed:{
             filterPersons() {
                 //取出相关的数据
-                const {searchName, persons} = this
+                //结构赋值
+                const {searchName, persons,orderType} = this
                 //最终需要显示的数组
                 let fPersons;
                 //对persons进行过滤
-                fPersons = persons.filter(p => {
+                //这里不能用大括号，和函数式表达是不同的
+                fPersons = persons.filter(p => p.name.indexOf(searchName)!==-1)
 
-                })
+                //排序
+                if(orderType!==0) {
+                    fPersons.sort(function (p1,p2) {
+                        if(orderType==2) {
+                            return p2.age-p1.age
+                        } else {
+                            return p1.age-p2.age
+                        }
+
+                    })
+                }
 
                 return fPersons
+            }
+        },
+        methods:{
+            setOrderType(orderType) {
+                this.orderType = orderType
             }
         }
     })

@@ -32,9 +32,13 @@
   <div id="demo">
     <input type="text" placeholder="First Name" v-model="firstName"><br>
     <input type="text" placeholder="Last Name" v-model="lastName"><br>
-    <input type="text" placeholder="Full Name1" v-model="firstName+lastName"><br>
-    <input type="text" placeholder="Full Name2"><br>
-    <input type="text" placeholder="Full Name3"><br>
+    <input type="text" placeholder="Full Name1" v-model="fullName1"><br>
+    <input type="text" placeholder="Full Name2" v-model="fullName2"><br>
+    <input type="text" placeholder="Full Name3" v-model="fullName3"><br>
+
+    <p>{{fullName1}}</p>
+    <p>{{fullName1}}</p>
+    <p>{{fullName1}}</p>
   </div>
   <!--引入vue-->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -66,14 +70,52 @@
     })
   </script>
   <script type="text/javascript">
-    new Vue({
+    const vm2 = new Vue({
       el:"#demo",
       data:{
         firstName:'A',
         lastName: 'B',
-        fullName1: 'A B'
+        //fullName1: 'A B'
+        fullName2: 'A B'
+      },
+      computed: {
+        //什么时候执行：初始化显示/相关的data属性数据发生了改变
+        //计算并返回当前属性的值
+        fullName1() {//计算属性中的一个方法，方法的返回值作为属性值
+          console.log('调用了compute')
+          return this.firstName+' '+this.lastName
+        },
+
+        fullName3: {
+          //回调函数，当需要读取当前属性值时回调，根据相关的数据计算并返回当前属性的值
+          //你定义的，你没有调用，但最终它执行了
+          get() {
+            return this.firstName + ' '+ this.lastName
+          },
+
+          //回调函数，监视当前属性值的变化，当属性值发生改变时回调，更新相关的属性数据
+          //set是监视
+          set(value) {//value是fullName3的最新属性值
+            const names = value.split(' ')
+            this.firstName = names[0]
+            this.lastName = names[1]
+          }
+        }
+      },
+      watch: { //配置监视
+        firstName: function (value) { //firstName的值发生了变化
+          console.log(this) //就是vm对象
+          this.fullName2 = value + ' ' +this.lastName
+        }
       }
     })
+
+    //也是监视的一种使用方法
+    vm2.$watch('lastName',function (value) {
+      //更新fullName2
+      this.fullName2 = this.firstName + '' + value
+    })
+
   </script>
   </body>
 </html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>指令</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="demo">
+    <p ref="content">ryan</p>
+    <button @click="hint">提示</button>
+    //防止闪现
+    <p v-cloak>{{msg}}</p>
+</div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el:'#demo',
+        data: {
+            msg:"ryanqi"
+        },
+        methods:{
+            hint(){
+                alert(this.$refs.content.textContent)
+            }
+        }
+    })
+</script>
+
+</body>
+</html>
